@@ -24,7 +24,7 @@ export default class App extends React.Component {
 	
 
 	isPainting = false;
-	myStrokeStyle = 'pink';
+	myStrokeStyle = 'white';
 	line = [];
 	prevPos = { offsetX: 0, offsetY: 0 };
 
@@ -65,8 +65,8 @@ export default class App extends React.Component {
 		this.ctx.stroke();
 		this.prevPos = { offsetX, offsetY };
 	}
-	onColorClick() {
-	    this.myStrokeStyle = 'blue';
+	onColorClick(e) {
+	    this.myStrokeStyle = window.getComputedStyle(e.target, null).getPropertyValue("background-color");
 	    console.log("oncolorclick");
 	}
 	componentDidMount() {
@@ -80,16 +80,17 @@ export default class App extends React.Component {
 	}
 
 
+
 	render() {
 		return (
 			<div>
 				<div>
-					<Div style={{backgroundColor: 'blue'}} onClick={this.onColorClick.bind(this)}></Div>
-					<Div style={{backgroundColor: 'red'}}></Div>
-					<Div style={{backgroundColor: 'green'}}></Div>
-					<Div style={{backgroundColor: 'yellow'}}></Div>
-					<Div style={{backgroundColor: 'white'}}></Div>
-					<Div style={{backgroundColor: 'pink'}}></Div>
+					<Div style={{backgroundColor: 'blue'}} onClick={this.onColorClick}></Div>
+					<Div style={{backgroundColor: 'red'}} onClick={this.onColorClick}></Div>
+					<Div style={{backgroundColor: 'green'}} onClick={this.onColorClick}></Div>
+					<Div style={{backgroundColor: 'yellow'}} onClick={this.onColorClick}></Div>
+					<Div style={{backgroundColor: 'white'}} onClick={this.onColorClick}></Div>
+					<Div style={{backgroundColor: 'pink'}} onClick={this.onColorClick}></Div>
 				</div>
 				<canvas
 				// We use the ref attribute to get direct access to the canvas element. 
