@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet'
+import EraserIcon from './static/eraser_icon.png'
 
 const Div = styled.div`
 	height: 20px;
@@ -12,6 +13,7 @@ const Div = styled.div`
  }
 `;
 
+
 export default class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -20,8 +22,10 @@ export default class App extends React.Component {
 		this.endPaintEvent = this.endPaintEvent.bind(this);
 		this.onColorClick = this.onColorClick.bind(this);
 		this.saveImage = this.saveImage.bind(this);
+		this.eraserFunc = this.eraserFunc.bind(this);
 		this.state = {
 			myStrokeStyle: 'white',
+			lineWidth: 5,
 		}
 	};
 
@@ -76,7 +80,18 @@ export default class App extends React.Component {
 	    //this.myStrokeStyle = window.getComputedStyle(e.target, null).getPropertyValue("background-color");
 	    this.setState({
 			myStrokeStyle: window.getComputedStyle(e.target, null).getPropertyValue("background-color"),
+			lineWidth: 5,
 		})
+		this.ctx.lineWidth = 5;
+	}
+
+	eraserFunc(e) {
+		this.setState({
+			myStrokeStyle: 'black',
+			lineWidth: 20,
+		});
+		this.ctx.lineWidth = 20;
+		
 	}
 
 
@@ -102,8 +117,6 @@ export default class App extends React.Component {
 		this.ctx.lineWidth = 5;
 	}
 
-
-
 	render() {
 		const stylesObj = {
 			backgroundColor: this.state.myStrokeStyle,
@@ -123,7 +136,8 @@ export default class App extends React.Component {
 					<Div style={{backgroundColor: 'yellow'}} onClick={this.onColorClick}></Div>
 					<Div style={{backgroundColor: 'blue'}} onClick={this.onColorClick}></Div>
 					<Div style={{backgroundColor: 'pink'}} onClick={this.onColorClick}></Div>
-					<div onClick={this.onColorClick} style={{height: '20px', backgroundColor: 'black', color: 'white', display: 'inline-block'}}>eraser</div>
+					<img src={EraserIcon} style={{height: '20px', width: '20px', border: '1px solid black'}}
+						onClick={this.eraserFunc}></img>
 					<button id="myButton" download="YourFileName.jpg" style={{backgroundColor: 'lightgrey', marginBottom: '1%'}} onClick={this.saveImage}>Save Drawing</button>
 				</div>
 				<div>
