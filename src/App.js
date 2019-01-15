@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet'
 
 const Div = styled.div`
 	height: 20px;
@@ -95,6 +96,9 @@ export default class App extends React.Component {
 
 		return (
 			<div>
+				<Helmet>
+					<title>Paint 4 Me</title>
+				</Helmet>
 				<div>
 					<Div style={stylesObj}></Div>
 					<Div style={{backgroundColor: 'white'}} onClick={this.onColorClick}></Div>
