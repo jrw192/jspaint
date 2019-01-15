@@ -19,6 +19,7 @@ export default class App extends React.Component {
 		this.onMouseMove = this.onMouseMove.bind(this);
 		this.endPaintEvent = this.endPaintEvent.bind(this);
 		this.onColorClick = this.onColorClick.bind(this);
+		this.saveImage = this.saveImage.bind(this);
 		this.state = {
 			myStrokeStyle: 'white',
 		}
@@ -76,11 +77,27 @@ export default class App extends React.Component {
 	    console.log("oncolorclick");
 	}
 
+
+
+	saveImage() {
+		const dataURL = this.canvas.toDataURL();
+		//document.write('<img src="'+dataURL+'"/>');
+		//this.saveBase64AsFile(dataURL, 'pic.png');
+		var link = document.createElement("a");
+
+		link.setAttribute("href", dataURL);
+		link.setAttribute("download", 'pic.png');
+		link.click();
+	}
+
 	componentDidMount() {
 		// Here we set up the properties of the canvas element. 
-		this.canvas.width = 1000;
-		this.canvas.height = 750;
+		this.canvas.width = 700;
+		this.canvas.height = 700;
 		this.ctx = this.canvas.getContext('2d');
+		this.ctx.fillStyle = 'black';
+		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
 		this.ctx.lineJoin = 'round';
 		this.ctx.lineCap = 'round';
 		this.ctx.lineWidth = 5;
@@ -107,6 +124,8 @@ export default class App extends React.Component {
 					<Div style={{backgroundColor: 'yellow'}} onClick={this.onColorClick}></Div>
 					<Div style={{backgroundColor: 'blue'}} onClick={this.onColorClick}></Div>
 					<Div style={{backgroundColor: 'pink'}} onClick={this.onColorClick}></Div>
+					<div onClick={this.onColorClick} style={{height: '20px', backgroundColor: 'black', color: 'white', display: 'inline-block'}}>eraser</div>
+					<button id="myButton" download="YourFileName.jpg" style={{backgroundColor: 'lightgrey', marginBottom: '1%'}} onClick={this.saveImage}>Save Drawing</button>
 				</div>
 				<div>
 					
@@ -114,7 +133,6 @@ export default class App extends React.Component {
 				<canvas
 				// We use the ref attribute to get direct access to the canvas element. 
 					ref={(ref) => (this.canvas = ref)}
-					style={{ background: 'black' }}
 					onMouseDown={this.onMouseDown}
 					onMouseLeave={this.endPaintEvent}
 					onMouseUp={this.endPaintEvent}
