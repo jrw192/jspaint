@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Helmet } from 'react-helmet'
 import EraserIcon from './static/eraser_icon.png'
+import './App.css'
 
 const Div = styled.div`
 	height: 20px;
 	width: 20px;
 	
-	display: inline-block;
 	border: 1px solid black;
 	margin-right: 1px;
  }
 `;
-
 
 export default class App extends React.Component {
 	constructor(props) {
@@ -21,11 +20,13 @@ export default class App extends React.Component {
 		this.onMouseMove = this.onMouseMove.bind(this);
 		this.endPaintEvent = this.endPaintEvent.bind(this);
 		this.onColorClick = this.onColorClick.bind(this);
+		this.handleChange = this.handleChange.bind(this)
 		this.saveImage = this.saveImage.bind(this);
 		this.eraserFunc = this.eraserFunc.bind(this);
 		this.state = {
 			myStrokeStyle: 'white',
 			lineWidth: 5,
+			userName: '',
 		}
 	};
 
@@ -94,13 +95,15 @@ export default class App extends React.Component {
 		
 	}
 
-
+	handleChange(event) {
+	    this.setState({userName: event.target.value});
+	  }
 
 	saveImage() {
 		const dataURL = this.canvas.toDataURL();
 		var link = document.createElement("a");
 		link.setAttribute("href", dataURL);
-		link.setAttribute("download", 'pic.png');
+		link.setAttribute("download", this.state.userName + '.png');
 		link.click();
 	}
 
@@ -124,11 +127,11 @@ export default class App extends React.Component {
 		};
 
 		return (
-			<div>
+			<div className="body">
 				<Helmet>
 					<title>Paint 4 Me</title>
 				</Helmet>
-				<div>
+				<div className="palette">
 					<Div style={stylesObj}></Div>
 					<Div style={{backgroundColor: 'white'}} onClick={this.onColorClick}></Div>
 					<Div style={{backgroundColor: 'red'}} onClick={this.onColorClick}></Div>
@@ -138,19 +141,39 @@ export default class App extends React.Component {
 					<Div style={{backgroundColor: 'pink'}} onClick={this.onColorClick}></Div>
 					<img src={EraserIcon} style={{height: '20px', width: '20px', border: '1px solid black'}}
 						onClick={this.eraserFunc}></img>
-					<button id="myButton" download="YourFileName.jpg" style={{backgroundColor: 'lightgrey', marginBottom: '1%'}} onClick={this.saveImage}>Save Drawing</button>
 				</div>
 				<div>
-					
+					<canvas className="canvas"
+					// We use the ref attribute to get direct access to the canvas element. 
+						ref={(ref) => (this.canvas = ref)}
+						style={{position: 'absolute', display: 'inline-block'}}
+						onMouseDown={this.onMouseDown}
+						onMouseLeave={this.endPaintEvent}
+						onMouseUp={this.endPaintEvent}
+						onMouseMove={this.onMouseMove}
+					/>
 				</div>
-				<canvas
-				// We use the ref attribute to get direct access to the canvas element. 
-					ref={(ref) => (this.canvas = ref)}
-					onMouseDown={this.onMouseDown}
-					onMouseLeave={this.endPaintEvent}
-					onMouseUp={this.endPaintEvent}
-					onMouseMove={this.onMouseMove}
-				/>
+				<div>
+				</div>
+				<div className="right">
+					<div className="text">
+						<p>
+							hi. this is a very ugly website. <br/>
+							pen color palette is on the left side, and currently selected color is at the top. <br/>
+							draw on the black canvas, then type your name (separated by underscores) in the form and click <br/>
+							the "save image" button to save your drawing. have fun.
+						</p>
+					</div>
+					<div className="form">
+						<form onSubmit={this.handleSubmit}>
+							<label className="label">
+								name:
+								<input type="text" value={this.state.userName} onChange={this.handleChange} />
+							</label>
+							<input className="submit_button" type="submit" value="Save Image" onClick={this.saveImage}/>
+						</form>
+					</div>
+				</div>
 			</div>
 		);
 	}

@@ -1,0 +1,25 @@
+body {
+	font-family: "Times New Roman";
+}
+
+.palette {
+	display: inline-block;
+	float: left;
+}
+
+.submit_button {
+	font-size: 1em;
+}
+
+.canvas {
+	display: inline-block;
+}
+
+.label {
+	font-size: 1em;
+}
+
+.right {
+	float: right;
+	margin-right: 5%;
+}
