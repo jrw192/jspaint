@@ -35,6 +35,10 @@ export default class App extends React.Component {
 	onMouseDown({ nativeEvent }) {
 		this.prevPos = nativeEvent;
 		this.isPainting = true;
+		
+		const offSetData = nativeEvent;
+		this.paint(this.prevPos, offSetData, this.state.myStrokeStyle)
+
 	}
 	onMouseMove({ nativeEvent }) {
 		if (this.isPainting) {
@@ -44,7 +48,6 @@ export default class App extends React.Component {
 				start: { ...this.prevPos },
 				stop: { ...offSetData },
 			};
-			//console.log("prevPos: " + this.prevPos.offsetX + ", " + this.prevPos.offsetY);
 			// Add the position to the line array
 			this.line = this.line.concat(positionData);
 			this.paint(this.prevPos, offSetData, this.state.myStrokeStyle);
@@ -74,17 +77,13 @@ export default class App extends React.Component {
 	    this.setState({
 			myStrokeStyle: window.getComputedStyle(e.target, null).getPropertyValue("background-color"),
 		})
-	    console.log("oncolorclick");
 	}
 
 
 
 	saveImage() {
 		const dataURL = this.canvas.toDataURL();
-		//document.write('<img src="'+dataURL+'"/>');
-		//this.saveBase64AsFile(dataURL, 'pic.png');
 		var link = document.createElement("a");
-
 		link.setAttribute("href", dataURL);
 		link.setAttribute("download", 'pic.png');
 		link.click();
