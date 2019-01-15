@@ -18,13 +18,15 @@ export default class App extends React.Component {
 		this.onMouseMove = this.onMouseMove.bind(this);
 		this.endPaintEvent = this.endPaintEvent.bind(this);
 		this.onColorClick = this.onColorClick.bind(this);
-		
+		this.state = {
+			myStrokeStyle: 'white',
+		}
 	};
 
 	
 
 	isPainting = false;
-	myStrokeStyle = 'white';
+	//myStrokeStyle = 'white';
 	line = [];
 	prevPos = { offsetX: 0, offsetY: 0 };
 
@@ -43,7 +45,7 @@ export default class App extends React.Component {
 			//console.log("prevPos: " + this.prevPos.offsetX + ", " + this.prevPos.offsetY);
 			// Add the position to the line array
 			this.line = this.line.concat(positionData);
-			this.paint(this.prevPos, offSetData, this.myStrokeStyle);
+			this.paint(this.prevPos, offSetData, this.state.myStrokeStyle);
 		}
 	}
 	endPaintEvent() {
@@ -66,9 +68,13 @@ export default class App extends React.Component {
 		this.prevPos = { offsetX, offsetY };
 	}
 	onColorClick(e) {
-	    this.myStrokeStyle = window.getComputedStyle(e.target, null).getPropertyValue("background-color");
+	    //this.myStrokeStyle = window.getComputedStyle(e.target, null).getPropertyValue("background-color");
+	    this.setState({
+			myStrokeStyle: window.getComputedStyle(e.target, null).getPropertyValue("background-color"),
+		})
 	    console.log("oncolorclick");
 	}
+
 	componentDidMount() {
 		// Here we set up the properties of the canvas element. 
 		this.canvas.width = 1000;
@@ -82,15 +88,24 @@ export default class App extends React.Component {
 
 
 	render() {
+		const stylesObj = {
+			backgroundColor: this.state.myStrokeStyle,
+			borderRadius: '50%',
+		};
+
 		return (
 			<div>
 				<div>
-					<Div style={{backgroundColor: 'blue'}} onClick={this.onColorClick}></Div>
+					<Div style={stylesObj}></Div>
+					<Div style={{backgroundColor: 'white'}} onClick={this.onColorClick}></Div>
 					<Div style={{backgroundColor: 'red'}} onClick={this.onColorClick}></Div>
 					<Div style={{backgroundColor: 'green'}} onClick={this.onColorClick}></Div>
 					<Div style={{backgroundColor: 'yellow'}} onClick={this.onColorClick}></Div>
-					<Div style={{backgroundColor: 'white'}} onClick={this.onColorClick}></Div>
+					<Div style={{backgroundColor: 'blue'}} onClick={this.onColorClick}></Div>
 					<Div style={{backgroundColor: 'pink'}} onClick={this.onColorClick}></Div>
+				</div>
+				<div>
+					
 				</div>
 				<canvas
 				// We use the ref attribute to get direct access to the canvas element. 
